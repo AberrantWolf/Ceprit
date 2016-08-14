@@ -34,32 +34,66 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
         double t = 0.5 * (unit_direction.y() + 1.0);
         return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
     }
+}
+
+Hitable* random_scene() {
+    int n = 500;
+    Hitable** list = new Hitable*[n+1];
+    list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Labertian(Vec3(0.5, 0.5, 0.5)));
     
+    int i = 1;
+    for (int a = -11; a<11; a++) {
+        for (int b=-11; b<11; b++) {
+            float choose_mat = drand48();
+            Vec3 center(a + 0.9*drand48(), 0.2, b + 0.9*drand48());
+            if ((center-Vec3(4, 0.2, 0)).length() > 0.9) {
+                if (choose_mat < 0.7) {
+                    //diffuse
+                    Material *mat = new Labertian(Vec3(drand48()*drand48(), drand48()*drand48(), drand48()*drand48()));
+                    list[i++] = new Sphere(center, 0.2, mat);
+                } else if (choose_mat < 0.9) {
+                    // metal
+                    Material *mat = new Metal(Vec3(0.5*(1+drand48()), 0.5*(1+drand48()), 0.5*(1+drand48())), 0.5*drand48());
+                    list[i++] = new Sphere(center, 0.2, mat);
+                } else {
+                    // Glass
+                    list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
+                }
+            }
+        }
+    }
+    
+    list[i++] = new Sphere(Vec3(0, 1, 0), 1.0, new Dielectric(1.5));
+    list[i++] = new Sphere(Vec3(-4, 1, 0), 1.0, new Labertian(Vec3(0.4, 0.2, 0.1)));
+    list[i++] = new Sphere(Vec3(4, 1, 0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
+    
+    return new HitableList(list, i);
 }
 
 int main(int argc, const char * argv[]) {
-    int nx = 200;
-    int ny = 100;
-    int ns = 100;   // number of samples
+    int nx = 640;
+    int ny = 480;
+    int ns = 40;   // number of samples
     
-    Hitable* list[5];
+//    Hitable* list[5];
+//    
+//    list[0] = new Sphere(Vec3(0, 0, -1), 0.5, new Labertian(Vec3(0.1, 0.3, 0.6)));
+//    list[1] = new Sphere(Vec3(0, -100.5, -1), 100, new Labertian(Vec3(0.8, 0.8, 0)));
+//    list[2] = new Sphere(Vec3(1, 0, -1), 0.5, new Metal(Vec3(0.8, 0.6, 0.2), 0.3));
+//    list[3] = new Sphere(Vec3(-1, 0, -1), 0.5, new Dielectric(1.5));
+//    list[4] = new Sphere(Vec3(-1, 0, -1), -0.45, new Dielectric(1.5));
     
-    list[0] = new Sphere(Vec3(0, 0, -1), 0.5, new Labertian(Vec3(0.1, 0.3, 0.6)));
-    list[1] = new Sphere(Vec3(0, -100.5, -1), 100, new Labertian(Vec3(0.8, 0.8, 0)));
-    list[2] = new Sphere(Vec3(1, 0, -1), 0.5, new Metal(Vec3(0.8, 0.6, 0.2), 0.3));
-    list[3] = new Sphere(Vec3(-1, 0, -1), 0.5, new Dielectric(1.5));
-    list[4] = new Sphere(Vec3(-1, 0, -1), -0.45, new Dielectric(1.5));
+    //Hitable* world = new HitableList(list, 5);
+    Hitable* world = random_scene();
     
-    Hitable* world = new HitableList(list, 5);
-    
-    Vec3 lookfrom(3, 1, 2);
-    Vec3 lookat(0, 0, -1);
+    Vec3 lookfrom(11, 2, 3);
+    Vec3 lookat(0, 0, 0);
     Vec3 vup(0, 1, 0);
     
     double focal_dist = (lookfrom - lookat).length();
-    double aperture = 1.0;
+    double aperture = 0.1;
     
-    Camera cam(lookfrom, lookat, vup, 20, double(nx)/double(ny), aperture, focal_dist);
+    Camera cam(lookfrom, lookat, vup, 25, double(nx)/double(ny), aperture, focal_dist);
     
     std::random_device rd;
     std::mt19937_64 gen(rd());
