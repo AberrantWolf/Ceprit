@@ -15,6 +15,7 @@
 #include "HitableList.h"
 #include "Camera.h"
 #include "Material.h"
+#include "BVHNode.h"
 
 Vec3 color(const Ray& r, Hitable* world, int depth) {
     HitRecord rec;
@@ -36,7 +37,7 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
     }
 }
 
-Hitable* random_scene() {
+HitableList* random_scene() {
     int n = 500;
     Hitable** list = new Hitable*[n+1];
     list[0] = new Sphere(Vec3(0, -1000, 0), Vec3(0, -1000, 0), 0, 1, 1000, new Labertian(Vec3(0.5, 0.5, 0.5)));
@@ -49,7 +50,7 @@ Hitable* random_scene() {
             if ((center-Vec3(4, 0.2, 0)).length() > 0.9) {
                 if (choose_mat < 0.7) {
                     //diffuse
-                    Material *mat = new Labertian(Vec3(drand48()*drand48(), drand48()*drand48(), drand48()*drand48()));
+                    Material *mat = new Labertian(Vec3(drand48(), drand48(), drand48()));
                     list[i++] = new Sphere(center, center + Vec3(0, 0.5*drand48(), 0),  0, 1, 0.2, mat);
                 } else if (choose_mat < 0.9) {
                     // metal
@@ -71,20 +72,13 @@ Hitable* random_scene() {
 }
 
 int main(int argc, const char * argv[]) {
-    int nx = 640;
-    int ny = 480;
-    int ns = 40;   // number of samples
+    int nx = 400;
+    int ny = 400;
+    int ns = 30;   // number of samples
     
-//    Hitable* list[5];
-//    
-//    list[0] = new Sphere(Vec3(0, 0, -1), 0.5, new Labertian(Vec3(0.1, 0.3, 0.6)));
-//    list[1] = new Sphere(Vec3(0, -100.5, -1), 100, new Labertian(Vec3(0.8, 0.8, 0)));
-//    list[2] = new Sphere(Vec3(1, 0, -1), 0.5, new Metal(Vec3(0.8, 0.6, 0.2), 0.3));
-//    list[3] = new Sphere(Vec3(-1, 0, -1), 0.5, new Dielectric(1.5));
-//    list[4] = new Sphere(Vec3(-1, 0, -1), -0.45, new Dielectric(1.5));
+    HitableList* world = random_scene();
     
-    //Hitable* world = new HitableList(list, 5);
-    Hitable* world = random_scene();
+    BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
     Vec3 lookfrom(13, 2, 3);
     Vec3 lookat(0, 0, 0);
@@ -110,7 +104,7 @@ int main(int argc, const char * argv[]) {
                 
                 Ray r = cam.get_ray(u, v);
                 
-                col += color(r, world, 0);
+                col += color(r, tree, 0);
             }
             col /= double(ns);
             col = Vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));

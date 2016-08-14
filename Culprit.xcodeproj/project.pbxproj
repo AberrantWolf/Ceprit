@@ -32,6 +32,8 @@
 		D2AF39D01D5FF1E600D494C6 /* HitableList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HitableList.h; sourceTree = "<group>"; };
 		D2AF39D11D5FF66200D494C6 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		D2AF39D21D5FFFA200D494C6 /* Material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		D2AF39D41D6045E100D494C6 /* AABB.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AABB.h; sourceTree = "<group>"; };
+		D2AF39D51D60524600D494C6 /* BVHNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BVHNode.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +70,10 @@
 				D2AF39CB1D5FD92000D494C6 /* Vec3.h */,
 				D2AF39CD1D5FEEAE00D494C6 /* Ray.h */,
 				D2AF39CE1D5FEECF00D494C6 /* Hitable.h */,
-				D2AF39D21D5FFFA200D494C6 /* Material.h */,
 				D2AF39D01D5FF1E600D494C6 /* HitableList.h */,
+				D2AF39D51D60524600D494C6 /* BVHNode.h */,
+				D2AF39D21D5FFFA200D494C6 /* Material.h */,
+				D2AF39D41D6045E100D494C6 /* AABB.h */,
 				D2AF39D11D5FF66200D494C6 /* Camera.h */,
 				D2AF39CF1D5FEF7F00D494C6 /* Sphere.h */,
 			);
@@ -253,6 +257,7 @@
 				D2AF39C81D5FD38E00D494C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

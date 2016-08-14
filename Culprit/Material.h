@@ -46,7 +46,7 @@ public:
                          Vec3& attenuation,
                          Ray& scattered) const override {
         Vec3 reflected = reflect(unit_vector(in_r.direction()), rec.normal);
-        scattered = Ray(rec.point, reflected + fuzz * random_point_in_unit_sphere());
+        scattered = Ray(rec.point, reflected + fuzz * random_point_in_unit_sphere(), in_r.time());
         attenuation = albedo;
         
         return (dot(scattered.direction(), rec.normal) > 0);
@@ -100,9 +100,9 @@ public:
         
         // set scattered ray to reflected or refracted
         if (drand48() < reflect_prob) {
-            scattered = Ray(rec.point, reflected);
+            scattered = Ray(rec.point, reflected, in_r.time());
         } else {
-            scattered = Ray(rec.point, refracted);
+            scattered = Ray(rec.point, refracted, in_r.time());
         }
         
         return true;
