@@ -40,7 +40,12 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
 HitableList* random_scene() {
     int n = 500;
     Hitable** list = new Hitable*[n+1];
-    list[0] = new Sphere(Vec3(0, -1000, 0), Vec3(0, -1000, 0), 0, 1, 1000, new Labertian(Vec3(0.5, 0.5, 0.5)));
+    
+    ConstantTexture* gray = new ConstantTexture(Vec3(0.5, 0.5, 0.5));
+	ConstantTexture* gold = new ConstantTexture(Vec3(1.0, 0.7, 0));
+	CheckerTexture* check = new CheckerTexture(gray, gold);
+    list[0] = new Sphere(Vec3(0, -1000, 0), Vec3(0, -1000, 0), 0, 1, 1000,
+						 new Labertian(check));
     
     int i = 1;
     for (int a = -11; a<11; a++) {
@@ -50,7 +55,8 @@ HitableList* random_scene() {
             if ((center-Vec3(4, 0.2, 0)).length() > 0.9) {
                 if (choose_mat < 0.7) {
                     //diffuse
-                    Material *mat = new Labertian(Vec3(drand48(), drand48(), drand48()));
+                    ConstantTexture* col_tex = new ConstantTexture(Vec3(drand48(), drand48(), drand48()));
+                    Material *mat = new Labertian(col_tex);
                     list[i++] = new Sphere(center, center + Vec3(0, 0.5*drand48(), 0),  0, 1, 0.2, mat);
                 } else if (choose_mat < 0.9) {
                     // metal
@@ -64,17 +70,19 @@ HitableList* random_scene() {
         }
     }
     
+    ConstantTexture* red = new ConstantTexture(Vec3(0.9, 0.2, 0.1));
+    
     list[i++] = new Sphere(Vec3(0, 1, 0), Vec3(0, 1, 0), 0, 1, 1.0, new Dielectric(1.5));
-    list[i++] = new Sphere(Vec3(-4, 1, 0), Vec3(-4, 1, 0), 0, 1, 1.0, new Labertian(Vec3(0.4, 0.2, 0.1)));
+    list[i++] = new Sphere(Vec3(-4, 1, 0), Vec3(-4, 1, 0), 0, 1, 1.0, new Labertian(red));
     list[i++] = new Sphere(Vec3(4, 1, 0), Vec3(4, 1, 0), 0, 1, 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
     
     return new HitableList(list, i);
 }
 
 int main(int argc, const char * argv[]) {
-    int nx = 400;
-    int ny = 400;
-    int ns = 30;   // number of samples
+    int nx = 100;
+    int ny = 100;
+    int ns = 100;   // number of samples
     
     HitableList* world = random_scene();
     

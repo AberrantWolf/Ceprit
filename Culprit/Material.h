@@ -10,7 +10,11 @@
 #define Material_h
 
 #include "Vec3.h"
+#include "Texture.h"
 
+//
+// ABSTRACT Material interface
+//
 class Material {
 public:
     virtual bool scatter(const Ray& in_r,
@@ -19,9 +23,13 @@ public:
                          Ray& scattered) const = 0;
 };
 
+
+//
+// Labertian (solid, diffuse) material
+//
 class Labertian : public Material {
 public:
-    Labertian(const Vec3& a) : albedo(a) {}
+    Labertian(Texture* a) : albedo(a) {}
     
     virtual bool scatter(const Ray& in_r,
                          const HitRecord& rec,
@@ -29,14 +37,18 @@ public:
                          Ray& scattered) const override {
         Vec3 target = rec.point + rec.normal + random_point_in_unit_sphere();
         scattered = Ray(rec.point, target - rec.point, in_r.time());
-        attenuation = albedo;
+        attenuation = albedo->value(0, 0, rec.point);
         
         return true;
     }
     
-    Vec3 albedo;
+    Texture* albedo;
 };
 
+
+//
+// Metal (reflective) material
+//
 class Metal : public Material {
 public:
     Metal(const Vec3& a, double f) : albedo(a), fuzz(f) {}
@@ -56,6 +68,8 @@ public:
     double fuzz;
 };
 
+
+// Utility function for calculating reflectivity vs refractivity
 double schlick(double cosine, double ref_idx) {
     double r0 = (1-ref_idx)/(1+ref_idx);
     r0 = r0*r0;
@@ -63,6 +77,10 @@ double schlick(double cosine, double ref_idx) {
     return r0 + (1-r0)*pow((1-cosine), 5);
 }
 
+
+//
+// Dielectric (refractive) material
+//
 class Dielectric : public Material {
 public:
     Dielectric(double ri) : ref_idx(ri) {}
