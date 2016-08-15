@@ -58,6 +58,19 @@ public:
 		//return randouble[perm_x[i] ^ perm_y[j] ^ perm_z[k]];
 	}
 	
+	double turb(const Vec3& p, int depth=7) const {
+		double accum = 0;
+		Vec3 temp_p = p;
+		double weight = 1.0;
+		for (int i=0; i<depth; i++) {
+			accum += weight*noise(temp_p);
+			weight *= 0.5;
+			temp_p *= 2;
+		}
+		
+		return fabs(accum);
+	}
+	
 	static Vec3* ranvec;
 	static int* perm_x;
 	static int* perm_y;

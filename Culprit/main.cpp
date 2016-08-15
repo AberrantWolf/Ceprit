@@ -80,8 +80,8 @@ HitableList* random_scene() {
 }
 
 int main(int argc, const char * argv[]) {
-    int nx = 200;
-    int ny = 200;
+    int nx = 400;
+    int ny = 400;
     int ns = 50;   // number of samples
     
 	//HitableList* world = random_scene();

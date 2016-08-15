@@ -61,7 +61,9 @@ public:
 	NoiseTexture() {}
 	NoiseTexture(double sc) : scale(sc) {}
 	virtual Vec3 value(double u, double v, const Vec3& p) const override  {
-		return Vec3(1, 1, 1) * 0.5 * (1 + noise.noise(scale * p));
+		//return Vec3(1, 1, 1) * 0.5 * (1 + noise.noise(scale * p));
+		//return Vec3(1, 1, 1) * noise.turb(scale * p);
+		return Vec3(1, 1, 1) * 0.5 * (1 + sin(scale*p.z() + 10 * noise.turb(p)));
 	}
 	
 	Perlin noise;
