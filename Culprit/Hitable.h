@@ -20,6 +20,7 @@ struct HitRecord {
     Vec3 point;
     Vec3 normal;
     Material* mat_ptr;
+	double u, v;
 };
 
 class Hitable {

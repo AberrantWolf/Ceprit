@@ -17,6 +17,9 @@
 #include "Material.h"
 #include "BVHNode.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 Vec3 color(const Ray& r, Hitable* world, int depth) {
     HitRecord rec;
     
@@ -25,7 +28,7 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
         Vec3 attenuation;
         
         if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
-            return attenuation * color(scattered, world, depth+1);
+			return attenuation * color(scattered, world, depth+1);
         }
         
         return Vec3(0, 0, 0);
@@ -82,30 +85,37 @@ HitableList* random_scene() {
 int main(int argc, const char * argv[]) {
     int nx = 400;
     int ny = 400;
-    int ns = 50;   // number of samples
+    int ns = 30;   // number of samples
     
 	//HitableList* world = random_scene();
 	Hitable* list[2];
 	
+	int tx, ty, tn;
+	unsigned char* tex_data = stbi_load("./planet.jpg", &tx, &ty, &tn, 0);
+	if (tx == 0 || ty == 0) {
+		return -1;
+	}
+	
 	Vec3 center = Vec3(0, 1.5, 0);
 	double radius = 1.5;
-	Texture* tex = new NoiseTexture(4);
+	Texture* tex = new ImageTexture(tex_data, tx, ty);
 	list[0] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
 	
 	center = Vec3(0, -1000, 0);
 	radius = 1000;
+	tex = new NoiseTexture(4);
 	list[1] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
 	
 	HitableList* world = new HitableList(list, 2);
     
     BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
-    Vec3 lookfrom(13, 2, 3);
-    Vec3 lookat(0, 0, 0);
+    Vec3 lookfrom(0, 2, 12);
+    Vec3 lookat(0, 1, 0);
     Vec3 vup(0, 1, 0);
     
-    double focal_dist = 10; //(lookfrom - lookat).length();
-    double aperture = 0.05;
+    double focal_dist = (lookfrom - lookat).length();
+    double aperture = 0.3;
     
     Camera cam(lookfrom, lookat, vup, 25, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
     

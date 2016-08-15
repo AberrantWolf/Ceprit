@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		D23C08671D611FDA00A8D669 /* Texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		D23C08681D61C7D900A8D669 /* Perlin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Perlin.h; sourceTree = "<group>"; };
+		D23C08691D61F57E00A8D669 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		D2AF39BF1D5FD38E00D494C6 /* Culprit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Culprit; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2AF39C21D5FD38E00D494C6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D2AF39CB1D5FD92000D494C6 /* Vec3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec3.h; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 				D23C08681D61C7D900A8D669 /* Perlin.h */,
 				D2AF39CD1D5FEEAE00D494C6 /* Ray.h */,
 				D2AF39CF1D5FEF7F00D494C6 /* Sphere.h */,
+				D23C08691D61F57E00A8D669 /* stb_image.h */,
 				D23C08671D611FDA00A8D669 /* Texture.h */,
 				D2AF39CB1D5FD92000D494C6 /* Vec3.h */,
 			);

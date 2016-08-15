@@ -36,8 +36,10 @@ public:
                          Vec3& attenuation,
                          Ray& scattered) const override {
         Vec3 target = rec.point + rec.normal + random_point_in_unit_sphere();
-        scattered = Ray(rec.point, target - rec.point, in_r.time());
-        attenuation = albedo->value(0, 0, rec.point);
+		
+		Vec3 off = rec.normal * 0.001;
+        scattered = Ray(rec.point + off, target - rec.point + off, in_r.time());
+        attenuation = albedo->value(rec.u, rec.v, rec.point);
         
         return true;
     }

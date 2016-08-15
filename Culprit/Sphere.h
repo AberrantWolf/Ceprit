@@ -15,6 +15,13 @@
 #include "Ray.h"
 #include "Material.h"
 
+void get_sphere_uv(const Vec3& p, double& u, double& v) {
+	double phi = atan2(p.z(), p.x());
+	double theta = asin(p.y());
+	u = 1-(phi + M_PI) / (2*M_PI);
+	v = (theta + M_PI/2) / M_PI;
+}
+
 class Sphere : public Hitable {
 public:
     Sphere() {}
@@ -53,6 +60,7 @@ bool Sphere::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const
             rec.point = r.point_at_parameter(rec.t);
             rec.normal = (rec.point - center(r.time())) / radius;
             rec.mat_ptr = mat;
+			get_sphere_uv((rec.point-center(r.time()))/radius, rec.u, rec.v);
             
             return true;
         }
@@ -62,6 +70,7 @@ bool Sphere::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const
             rec.point = r.point_at_parameter(rec.t);
             rec.normal = (rec.point - center(r.time())) / radius;
             rec.mat_ptr = mat;
+			get_sphere_uv((rec.point-center(r.time()))/radius, rec.u, rec.v);
             
             return true;
         }
