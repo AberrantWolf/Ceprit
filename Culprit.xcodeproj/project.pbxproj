@@ -24,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		D23C08671D611FDA00A8D669 /* Texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
+		D23C08681D61C7D900A8D669 /* Perlin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Perlin.h; sourceTree = "<group>"; };
 		D2AF39BF1D5FD38E00D494C6 /* Culprit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Culprit; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2AF39C21D5FD38E00D494C6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D2AF39CB1D5FD92000D494C6 /* Vec3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vec3.h; sourceTree = "<group>"; };
@@ -67,17 +68,18 @@
 		D2AF39C11D5FD38E00D494C6 /* Culprit */ = {
 			isa = PBXGroup;
 			children = (
-				D2AF39C21D5FD38E00D494C6 /* main.cpp */,
-				D23C08671D611FDA00A8D669 /* Texture.h */,
-				D2AF39CB1D5FD92000D494C6 /* Vec3.h */,
-				D2AF39CD1D5FEEAE00D494C6 /* Ray.h */,
+				D2AF39D41D6045E100D494C6 /* AABB.h */,
+				D2AF39D51D60524600D494C6 /* BVHNode.h */,
+				D2AF39D11D5FF66200D494C6 /* Camera.h */,
 				D2AF39CE1D5FEECF00D494C6 /* Hitable.h */,
 				D2AF39D01D5FF1E600D494C6 /* HitableList.h */,
-				D2AF39D51D60524600D494C6 /* BVHNode.h */,
+				D2AF39C21D5FD38E00D494C6 /* main.cpp */,
 				D2AF39D21D5FFFA200D494C6 /* Material.h */,
-				D2AF39D41D6045E100D494C6 /* AABB.h */,
-				D2AF39D11D5FF66200D494C6 /* Camera.h */,
+				D23C08681D61C7D900A8D669 /* Perlin.h */,
+				D2AF39CD1D5FEEAE00D494C6 /* Ray.h */,
 				D2AF39CF1D5FEF7F00D494C6 /* Sphere.h */,
+				D23C08671D611FDA00A8D669 /* Texture.h */,
+				D2AF39CB1D5FD92000D494C6 /* Vec3.h */,
 			);
 			path = Culprit;
 			sourceTree = "<group>";

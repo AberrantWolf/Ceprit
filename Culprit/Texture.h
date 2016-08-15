@@ -10,6 +10,7 @@
 #define Texture_h
 
 #include "Vec3.h"
+#include "Perlin.h"
 
 //
 // ABSTRACT Texture class interface
@@ -53,6 +54,18 @@ public:
 	
 	Texture* odd;
 	Texture* even;
+};
+
+class NoiseTexture : public Texture {
+public:
+	NoiseTexture() {}
+	NoiseTexture(double sc) : scale(sc) {}
+	virtual Vec3 value(double u, double v, const Vec3& p) const override  {
+		return Vec3(1, 1, 1) * 0.5 * (1 + noise.noise(scale * p));
+	}
+	
+	Perlin noise;
+	double scale;
 };
 
 #endif /* Texture_h */

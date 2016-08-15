@@ -27,9 +27,9 @@ public:
 //
 // Labertian (solid, diffuse) material
 //
-class Labertian : public Material {
+class Lambertian : public Material {
 public:
-    Labertian(Texture* a) : albedo(a) {}
+    Lambertian(Texture* a) : albedo(a) {}
     
     virtual bool scatter(const Ray& in_r,
                          const HitRecord& rec,

@@ -20,7 +20,7 @@
 Vec3 color(const Ray& r, Hitable* world, int depth) {
     HitRecord rec;
     
-    if (world->hit(r, 0.0001, MAXFLOAT, rec)) {
+    if (world->hit(r, 0.001, MAXFLOAT, rec)) {
         Ray scattered;
         Vec3 attenuation;
         
@@ -45,7 +45,7 @@ HitableList* random_scene() {
 	ConstantTexture* gold = new ConstantTexture(Vec3(1.0, 0.7, 0));
 	CheckerTexture* check = new CheckerTexture(gray, gold);
     list[0] = new Sphere(Vec3(0, -1000, 0), Vec3(0, -1000, 0), 0, 1, 1000,
-						 new Labertian(check));
+						 new Lambertian(check));
     
     int i = 1;
     for (int a = -11; a<11; a++) {
@@ -56,7 +56,7 @@ HitableList* random_scene() {
                 if (choose_mat < 0.7) {
                     //diffuse
                     ConstantTexture* col_tex = new ConstantTexture(Vec3(drand48(), drand48(), drand48()));
-                    Material *mat = new Labertian(col_tex);
+                    Material *mat = new Lambertian(col_tex);
                     list[i++] = new Sphere(center, center + Vec3(0, 0.5*drand48(), 0),  0, 1, 0.2, mat);
                 } else if (choose_mat < 0.9) {
                     // metal
@@ -70,21 +70,33 @@ HitableList* random_scene() {
         }
     }
     
-    ConstantTexture* red = new ConstantTexture(Vec3(0.9, 0.2, 0.1));
+    ConstantTexture* red = new ConstantTexture(Vec3(1.0, 0.05, 0.05));
     
     list[i++] = new Sphere(Vec3(0, 1, 0), Vec3(0, 1, 0), 0, 1, 1.0, new Dielectric(1.5));
-    list[i++] = new Sphere(Vec3(-4, 1, 0), Vec3(-4, 1, 0), 0, 1, 1.0, new Labertian(red));
+    list[i++] = new Sphere(Vec3(-4, 1, 0), Vec3(-4, 1, 0), 0, 1, 1.0, new Lambertian(red));
     list[i++] = new Sphere(Vec3(4, 1, 0), Vec3(4, 1, 0), 0, 1, 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
     
     return new HitableList(list, i);
 }
 
 int main(int argc, const char * argv[]) {
-    int nx = 100;
-    int ny = 100;
-    int ns = 100;   // number of samples
+    int nx = 200;
+    int ny = 200;
+    int ns = 50;   // number of samples
     
-    HitableList* world = random_scene();
+	//HitableList* world = random_scene();
+	Hitable* list[2];
+	
+	Vec3 center = Vec3(0, 1.5, 0);
+	double radius = 1.5;
+	Texture* tex = new NoiseTexture(4);
+	list[0] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
+	
+	center = Vec3(0, -1000, 0);
+	radius = 1000;
+	list[1] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
+	
+	HitableList* world = new HitableList(list, 2);
     
     BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
@@ -95,7 +107,7 @@ int main(int argc, const char * argv[]) {
     double focal_dist = 10; //(lookfrom - lookat).length();
     double aperture = 0.05;
     
-    Camera cam(lookfrom, lookat, vup, 20, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
+    Camera cam(lookfrom, lookat, vup, 25, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
     
     std::random_device rd;
     std::mt19937_64 gen(rd());
