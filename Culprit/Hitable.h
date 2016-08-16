@@ -40,4 +40,46 @@ AABB surrounding_box(AABB box0, AABB box1) {
     return AABB(small, big);
 }
 
+
+
+class XYRect : public Hitable {
+public:
+	XYRect() {}
+	XYRect(double _x0, double _x1, double _y0, double _y1, double _k, Material* m) :
+	x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k), mat_p(m) {}
+	
+	virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const;
+	virtual bool bounding_box(double t0, double t1, AABB& box) const {
+		box = AABB(Vec3(x0,y0, k-0.001), Vec3(x1, y1, k+0.001));
+		return true;
+	}
+	
+	Material* mat_p;
+	double x0, x1, y0, y1, k;
+};
+
+bool XYRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
+	double t = (k-r.origin().z()) / r.direction().z();
+	
+	if (t<0 || t > t_max) {
+		return false;
+	}
+	
+	double x = r.origin().x() + t*r.direction().x();
+	double y = r.origin().y() + t*r.direction().y();
+	if (x < x0 || x > x1 || y < y0 || y > y1) {
+		return false;
+	}
+	
+	// otherwise it hit
+	rec.u = (x-x0)/(x1-x0);
+	rec.v = (y-y0)/(y1-y0);
+	rec.t = t;
+	rec.mat_ptr = mat_p;
+	rec.point = r.point_at_parameter(t);
+	rec.normal = Vec3(0, 0, 1);
+	
+	return true;
+}
+
 #endif /* Hitable_h */

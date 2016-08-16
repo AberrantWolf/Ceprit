@@ -21,6 +21,9 @@ public:
                          const HitRecord& rec,
                          Vec3& attenuation,
                          Ray& scattered) const = 0;
+	virtual Vec3 emitted(double u, double v, const Vec3& p) const {
+		return Vec3(0, 0, 0);
+	}
 };
 
 
@@ -90,7 +93,8 @@ public:
     virtual bool scatter(const Ray& in_r,
                          const HitRecord& rec,
                          Vec3& attenuation,
-                         Ray& scattered) const override {
+                         Ray& scattered) const override
+	{
         Vec3 outward_normal;
         Vec3 reflected = reflect(in_r.direction(), rec.normal);
         
@@ -129,6 +133,26 @@ public:
     }
     
     double ref_idx;
+};
+
+
+class DiffuseLight : public Material {
+public:
+	DiffuseLight(Texture* t) : emit(t) {}
+	
+	virtual bool scatter(const Ray& in_r,
+						 const HitRecord& rec,
+						 Vec3& attenuation,
+						 Ray& scattered) const override
+	{
+		return false;
+	}
+	
+	virtual Vec3 emitted(double u, double v, const Vec3& p) const override {
+		return emit->value(u, v, p);
+	}
+	
+	Texture* emit;
 };
 
 #endif /* Material_h */

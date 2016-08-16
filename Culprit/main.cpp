@@ -26,17 +26,21 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
     if (world->hit(r, 0.001, MAXFLOAT, rec)) {
         Ray scattered;
         Vec3 attenuation;
+		Vec3 emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.point);
         
         if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
-			return attenuation * color(scattered, world, depth+1);
-        }
-        
+			return emitted + attenuation * color(scattered, world, depth+1);
+		} else {
+			return emitted;
+		}
+			
         return Vec3(0, 0, 0);
     } else {
+		return Vec3(0, 0, 0);
         // Sky background
-        Vec3 unit_direction = unit_vector(r.direction());
-        double t = 0.5 * (unit_direction.y() + 1.0);
-        return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
+//        Vec3 unit_direction = unit_vector(r.direction());
+//        double t = 0.5 * (unit_direction.y() + 1.0);
+//        return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
     }
 }
 
@@ -82,42 +86,58 @@ HitableList* random_scene() {
     return new HitableList(list, i);
 }
 
+HitableList* SimpleLight() {
+	Texture* pertex = new NoiseTexture(4);
+	Hitable** list = new Hitable*[4];
+	
+	Vec3 pos = Vec3(0, -1000, 0);
+	list[0] = new Sphere(pos, pos, 0, 1, 1000, new Lambertian(pertex));
+	pos = Vec3(0, 2, 0);
+	list[1] = new Sphere(pos, pos, 0, 1, 2, new Lambertian(pertex));
+	pos = Vec3(2, 4, 2);
+	list[2] = new Sphere(pos, pos, 0, 1, 0.5, new DiffuseLight(new ConstantTexture(Vec3(4, 4, 4))));
+	list[3] = new XYRect(3, 5, 1, 3, -2, new DiffuseLight(new ConstantTexture(Vec3(8, 8, 8))));
+	
+	return new HitableList(list, 4);
+}
+
 int main(int argc, const char * argv[]) {
     int nx = 400;
     int ny = 400;
-    int ns = 30;   // number of samples
+    int ns = 100;   // number of samples
     
 	//HitableList* world = random_scene();
-	Hitable* list[2];
+//	Hitable* list[2];
+//	
+//	int tx, ty, tn;
+//	unsigned char* tex_data = stbi_load("./planet.jpg", &tx, &ty, &tn, 0);
+//	if (tx == 0 || ty == 0) {
+//		return -1;
+//	}
+//	
+//	Vec3 center = Vec3(0, 1.5, 0);
+//	double radius = 1.5;
+//	Texture* tex = new ImageTexture(tex_data, tx, ty);
+//	list[0] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
+//	
+//	center = Vec3(0, -1000, 0);
+//	radius = 1000;
+//	tex = new NoiseTexture(4);
+//	list[1] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
+//	
+//	HitableList* world = new HitableList(list, 2);
+	HitableList* world = SimpleLight();
 	
-	int tx, ty, tn;
-	unsigned char* tex_data = stbi_load("./planet.jpg", &tx, &ty, &tn, 0);
-	if (tx == 0 || ty == 0) {
-		return -1;
-	}
-	
-	Vec3 center = Vec3(0, 1.5, 0);
-	double radius = 1.5;
-	Texture* tex = new ImageTexture(tex_data, tx, ty);
-	list[0] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
-	
-	center = Vec3(0, -1000, 0);
-	radius = 1000;
-	tex = new NoiseTexture(4);
-	list[1] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
-	
-	HitableList* world = new HitableList(list, 2);
-    
     BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
-    Vec3 lookfrom(0, 2, 12);
+    Vec3 lookfrom(4, 2, 12);
     Vec3 lookat(0, 1, 0);
     Vec3 vup(0, 1, 0);
     
     double focal_dist = (lookfrom - lookat).length();
     double aperture = 0.3;
     
-    Camera cam(lookfrom, lookat, vup, 25, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
+    Camera cam(lookfrom, lookat, vup, 45, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
     
     std::random_device rd;
     std::mt19937_64 gen(rd());
@@ -133,8 +153,14 @@ int main(int argc, const char * argv[]) {
                 double v = double(j + dis(gen)) / double(ny);
                 
                 Ray r = cam.get_ray(u, v);
-                
-                col += color(r, tree, 0);
+				
+				Vec3 tcol = color(r, tree, 0);
+//				double cmax = fmax(tcol.x(), fmax(tcol.y(), tcol.z()));
+//				if (cmax > 1) {
+//					tcol /= cmax;
+//				}
+				
+				col += tcol;
             }
             col /= double(ns);
             col = Vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
