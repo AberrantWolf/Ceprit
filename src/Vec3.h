@@ -118,41 +118,14 @@ inline Vec3 unit_vector(const Vec3& v) {
 }
 
 
-Vec3 random_point_in_unit_sphere() {
-    Vec3 p;
-    
-    do {
-        p = 2.0 * Vec3(drand48(), drand48(), drand48()) - Vec3(1, 1, 1);
-    } while (p.squared_length() >= 1.0);
-    
-    return p;
-}
 
-Vec3 random_point_in_unit_disk() {
-    Vec3 p;
-    do {
-        p = 2.0 * Vec3(drand48(), drand48(), 0.0) - Vec3(1, 1, 0);
-    } while (dot(p, p) >= 1.0);
-    
-    return p;
-}
+
 
 inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2*dot(v, n) * n;
 }
 
-bool refract(const Vec3& v, const Vec3& n, double ni_over_nt, Vec3& refracted) {
-    Vec3 uv = unit_vector(v);
-    double dt = dot(uv, n);
-    double discriminant = 1.0 - ni_over_nt * ni_over_nt * (1.0 - dt * dt);
-    
-    if (discriminant > 0) {
-        refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminant);
-        return true;
-    }
-    
-    return false;
-}
+bool refract(const Vec3& v, const Vec3& n, double ni_over_nt, Vec3& refracted);
 
 //
 // Implementing inner functionality

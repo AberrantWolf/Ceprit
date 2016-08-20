@@ -9,16 +9,12 @@
 #include <iostream>
 #include <random>
 
-#include "Vec3.h"
-#include "Ray.h"
-#include "Sphere.h"
-#include "HitableList.h"
-#include "Camera.h"
-#include "Material.h"
-#include "BVHNode.h"
+#include <Hitable/AARects.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "Sphere.h"
+#include "Hitable/HitableList.h"
+#include "Camera.h"
+//#include "BVHNode.h"
 
 Vec3 color(const Ray& r, Hitable* world, int depth) {
     HitRecord rec;
@@ -57,7 +53,7 @@ HitableList* random_scene() {
     int i = 1;
     for (int a = -11; a<11; a++) {
         for (int b=-11; b<11; b++) {
-            float choose_mat = drand48();
+            double choose_mat = drand48();
             Vec3 center(a + 0.9*drand48(), 0.2, b + 0.9*drand48());
             if ((center-Vec3(4, 0.2, 0)).length() > 0.9) {
                 if (choose_mat < 0.7) {
@@ -126,9 +122,11 @@ int main(int argc, const char * argv[]) {
 //	list[1] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
 //	
 //	HitableList* world = new HitableList(list, 2);
-	HitableList* world = SimpleLight();
+	//HitableList* world = SimpleLight();
+
+	Hitable* world = CornellBox();
 	
-    BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
+    //BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
     Vec3 lookfrom(4, 2, 12);
     Vec3 lookat(0, 1, 0);
@@ -154,7 +152,7 @@ int main(int argc, const char * argv[]) {
                 
                 Ray r = cam.get_ray(u, v);
 				
-				Vec3 tcol = color(r, tree, 0);
+				Vec3 tcol = color(r, world, 0);
 //				double cmax = fmax(tcol.x(), fmax(tcol.y(), tcol.z()));
 //				if (cmax > 1) {
 //					tcol /= cmax;
