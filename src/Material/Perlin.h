@@ -15,12 +15,12 @@ Vec3* perlin_generate();
 void permute(int* p, int n);
 int* perlin_generate_perm();
 
-inline double perlin_interp(Vec3 c[2][2][2], double u, double v, double w) {
-	double uu = u*u*(3-2*u);
-	double vv = v*v*(3-2*v);
-	double ww = w*w*(3-2*w);
+inline real perlin_interp(Vec3 c[2][2][2], real u, real v, real w) {
+	real uu = u*u*(3-2*u);
+	real vv = v*v*(3-2*v);
+	real ww = w*w*(3-2*w);
 	
-	double accum = 0;
+	real accum = 0;
 	
 	for (int i=0; i<2; i++) {
 		for (int j=0; j<2; j++) {
@@ -39,10 +39,10 @@ inline double perlin_interp(Vec3 c[2][2][2], double u, double v, double w) {
 
 class Perlin {
 public:
-	double noise(const Vec3& p) const {
-		double u = p.x() - floor(p.x());
-		double v = p.y() - floor(p.y());
-		double w = p.z() - floor(p.z());
+	real noise(const Vec3& p) const {
+		real u = p.x() - floor(p.x());
+		real v = p.y() - floor(p.y());
+		real w = p.z() - floor(p.z());
 		
 		int i = (int)floor(p.x()); //int(4 * p.x()) & 255;
 		int j = (int)floor(p.y()); //int(4 * p.y()) & 255;
@@ -62,10 +62,10 @@ public:
 		//return randouble[perm_x[i] ^ perm_y[j] ^ perm_z[k]];
 	}
 	
-	double turb(const Vec3& p, int depth=7) const {
-		double accum = 0;
+	real turb(const Vec3& p, int depth=7) const {
+		real accum = 0;
 		Vec3 temp_p = p;
-		double weight = 1.0;
+		real weight = 1.0;
 		for (int i=0; i<depth; i++) {
 			accum += weight*noise(temp_p);
 			weight *= 0.5;

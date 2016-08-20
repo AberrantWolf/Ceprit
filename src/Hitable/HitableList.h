@@ -19,8 +19,8 @@ public:
         list_size = n;
     }
     
-    virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const override;
-    virtual bool bounding_box(double t0, double t1, AABB& box) const override;
+    virtual bool hit(const Ray& r, real t_min, real t_max, HitRecord& rec) const override;
+    virtual bool bounding_box(real t0, real t1, AABB& box) const override;
     
     // TODO: Should be private with accessor funcs
     Hitable** list;

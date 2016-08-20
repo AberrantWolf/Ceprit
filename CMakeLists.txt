@@ -20,8 +20,6 @@ set(SOURCE_FILES
 
 		src/stb_image_implementation.cpp
 		src/Hitable/Hitable.h
-		src/Hitable/Box.cpp
-		src/Hitable/Box.h
 		src/Hitable/AARects.cpp
 		src/Hitable/AARects.h
 		src/Hitable/HitableList.cpp
@@ -31,6 +29,6 @@ set(SOURCE_FILES
 		src/Material/Material.h
 		src/Material/Perlin.cpp src/Material/Perlin.h
 		src/Material/Texture.h
-		src/Hitable/FlipNormals.h src/Hitable/AABox.cpp src/Hitable/AABox.h)
+		src/Hitable/FlipNormals.h src/Hitable/AABox.cpp src/Hitable/AABox.h src/Hitable/Translation.h src/Hitable/RotateY.cpp src/Hitable/RotateY.h src/Defines.h)
 
 add_executable(Ceprit ${SOURCE_FILES})

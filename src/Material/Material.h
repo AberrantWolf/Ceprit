@@ -21,7 +21,7 @@ public:
                          const HitRecord& rec,
                          Vec3& attenuation,
                          Ray& scattered) const = 0;
-	virtual Vec3 emitted(double u, double v, const Vec3& p) const {
+	virtual Vec3 emitted(real u, real v, const Vec3& p) const {
 		return Vec3(0, 0, 0);
 	}
 };
@@ -56,7 +56,7 @@ public:
 //
 class Metal : public Material {
 public:
-    Metal(const Vec3& a, double f) : albedo(a), fuzz(f) {}
+    Metal(const Vec3& a, real f) : albedo(a), fuzz(f) {}
     
     virtual bool scatter(const Ray& in_r,
                          const HitRecord& rec,
@@ -70,7 +70,7 @@ public:
     }
     
     Vec3 albedo;
-    double fuzz;
+    real fuzz;
 };
 
 
@@ -79,7 +79,7 @@ public:
 //
 class Dielectric : public Material {
 public:
-    Dielectric(double ri) : ref_idx(ri) {}
+    Dielectric(real ri) : ref_idx(ri) {}
     
     virtual bool scatter(const Ray& in_r,
                          const HitRecord& rec,
@@ -89,12 +89,12 @@ public:
         Vec3 outward_normal;
         Vec3 reflected = reflect(in_r.direction(), rec.normal);
         
-        double ni_over_nt;
+        real ni_over_nt;
         attenuation = Vec3(1.0, 1.0, 1.0);
         Vec3 refracted;
         
-        double reflect_prob;
-        double cosine;
+        real reflect_prob;
+        real cosine;
         
         if (dot(in_r.direction(), rec.normal) > 0) {
             outward_normal = -rec.normal;
@@ -123,7 +123,7 @@ public:
         return true;
     }
     
-    double ref_idx;
+    real ref_idx;
 };
 
 
@@ -139,7 +139,7 @@ public:
 		return false;
 	}
 	
-	virtual Vec3 emitted(double u, double v, const Vec3& p) const override {
+	virtual Vec3 emitted(real u, real v, const Vec3& p) const override {
 		return emit->value(u, v, p);
 	}
 	

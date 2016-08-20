@@ -9,6 +9,7 @@
 #ifndef AABB_h
 #define AABB_h
 
+#include <Defines.h>
 #include "Vec3.h"
 #include "Ray.h"
 
@@ -20,12 +21,12 @@ public:
     Vec3 min() const { return _min; }
     Vec3 max() const { return _max; }
     
-    bool hit(const Ray& r, double tmin, double tmax) const {
+    bool hit(const Ray& r, real tmin, real tmax) const {
         for (int a=0; a<3; a++) {
-            double invD = 1.0f / r.direction()[a];
+            real invD = 1.0f / r.direction()[a];
             
-            double t0 = (_min[a] - r.origin()[a]) * invD;
-            double t1 = (_max[a] - r.origin()[a]) * invD;
+            real t0 = (_min[a] - r.origin()[a]) * invD;
+            real t1 = (_max[a] - r.origin()[a]) * invD;
             
             if (invD < 0.0) {
                 std::swap(t0, t1);

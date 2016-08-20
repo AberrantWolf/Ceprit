@@ -18,7 +18,7 @@
 //
 class Texture {
 public:
-	virtual Vec3 value(double u, double v, const Vec3& p) const = 0;
+	virtual Vec3 value(real u, real v, const Vec3& p) const = 0;
 };
 
 
@@ -30,7 +30,7 @@ public:
 	ConstantTexture() {}
 	ConstantTexture(Vec3 c) : color(c) {}
 	
-	virtual Vec3 value(double u, double v, const Vec3& p) const override {
+	virtual Vec3 value(real u, real v, const Vec3& p) const override {
 		return color;
 	}
 	
@@ -43,8 +43,8 @@ public:
 	CheckerTexture() {}
 	CheckerTexture(Texture* t0, Texture* t1): odd(t0), even(t1) {}
 	
-	virtual Vec3 value(double u, double v, const Vec3& p) const override  {
-		double sines = sin(10*p.x()) * sin(10*p.y()) * sin(10*p.z());
+	virtual Vec3 value(real u, real v, const Vec3& p) const override  {
+		real sines = sin(10*p.x()) * sin(10*p.y()) * sin(10*p.z());
 		
 		if (sines < 0) {
 			return odd->value(u, v, p);
@@ -60,15 +60,15 @@ public:
 class NoiseTexture : public Texture {
 public:
 	NoiseTexture() {}
-	NoiseTexture(double sc) : scale(sc) {}
-	virtual Vec3 value(double u, double v, const Vec3& p) const override  {
+	NoiseTexture(real sc) : scale(sc) {}
+	virtual Vec3 value(real u, real v, const Vec3& p) const override  {
 		//return Vec3(1, 1, 1) * 0.5 * (1 + noise.noise(scale * p));
 		//return Vec3(1, 1, 1) * noise.turb(scale * p);
 		return Vec3(1, 1, 1) * 0.5 * (1 + sin(scale*p.z() + 10 * noise.turb(p)));
 	}
 	
 	Perlin noise;
-	double scale;
+	real scale;
 };
 
 
@@ -77,7 +77,7 @@ public:
 	ImageTexture() {}
 	ImageTexture(unsigned char* pixels, int A, int B) : data(pixels), nx(A), ny(B) {}
 	
-	virtual Vec3 value(double u, double v, const Vec3& p) const;
+	virtual Vec3 value(real u, real v, const Vec3& p) const;
 	
 	unsigned char* data;
 	int nx, ny;

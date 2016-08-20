@@ -12,9 +12,9 @@ class AABox : public Hitable {
 public:
 	AABox(const Vec3& p0, const Vec3& p1, Material* mp);
 
-	bool hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const override;
+	bool hit(const Ray &r, real t_min, real t_max, HitRecord &rec) const override;
 
-	bool bounding_box(double t0, double t1, AABB &box) const override {
+	bool bounding_box(real t0, real t1, AABB &box) const override {
 		box = AABB(pmin, pmax);
 		return true;
 	}

@@ -14,15 +14,15 @@
 class Camera {
 public:
     Camera(const Vec3& lookfrom, const Vec3& lookat, const Vec3& vup,
-           double fovy, double aspect,
-           double aperture, double focus_dist,
-           double t0, double t1)
+           real fovy, real aspect,
+           real aperture, real focus_dist,
+           real t0, real t1)
     {
         lens_radius = aperture / 2;
         
-        double theta = fovy * M_PI / 180;
-        double half_height = tan(theta/2);
-        double half_width = aspect * half_height;
+        real theta = fovy * M_PI / 180;
+        real half_height = tan(theta/2);
+        real half_width = aspect * half_height;
         
         origin = lookfrom;
         w = unit_vector(lookfrom - lookat);
@@ -37,11 +37,11 @@ public:
         time1 = t1;
     }
     
-    Ray get_ray(double s, double t) {
+    Ray get_ray(real s, real t) {
         Vec3 rd = lens_radius * random_point_in_unit_disk();
         Vec3 offset =u * rd.x() + v*rd.y();
         
-        double time = time0 + drand48() * (time1 - time0);
+        real time = time0 + drand48() * (time1 - time0);
         return Ray(origin + offset, lower_left_corner + s*horizontal + t*vertical - origin - offset, time);
     }
     
@@ -51,10 +51,10 @@ public:
     Vec3 vertical;
     
     Vec3 u, v, w;
-    double lens_radius;
+    real lens_radius;
     
     // Shutter open/shut times
-    double time0, time1;
+    real time0, time1;
 };
 
 #endif /* Camera_h */

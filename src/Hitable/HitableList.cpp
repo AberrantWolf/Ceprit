@@ -9,10 +9,10 @@
 #include "Hitable.h"
 #include "HitableList.h"
 
-bool HitableList::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const {
+bool HitableList::hit(const Ray& r, real t_min, real t_max, HitRecord& rec) const {
 	HitRecord temp_rec;
 	bool hit_anything = false;
-	double closest_so_far = t_max;
+	real closest_so_far = t_max;
 
 	for (int i=0; i<list_size; i++) {
 		if (list[i]->hit(r, t_min, closest_so_far, temp_rec)) {
@@ -25,7 +25,7 @@ bool HitableList::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) 
 	return hit_anything;
 }
 
-bool HitableList::bounding_box(double t0, double t1, AABB &box) const {
+bool HitableList::bounding_box(real t0, real t1, AABB &box) const {
 	if (list_size < 1) return false;
 
 	AABB temp_box;

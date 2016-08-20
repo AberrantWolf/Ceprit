@@ -11,6 +11,8 @@
 
 #include <stdlib.h>
 #include <cstdlib>
+#include <Hitable/Hitable.h>
+#include "AABB.h"
 
 int box_x_compare(const void* a, const void* b) {
     AABB box_left, box_right;
@@ -63,10 +65,10 @@ int box_z_compare(const void* a, const void* b) {
 class BVHNode : public Hitable {
 public:
     BVHNode() {}
-    BVHNode(Hitable** l, int n, double time0, double time1);
+    BVHNode(Hitable** l, int n, real time0, real time1);
     
-    virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const;
-    virtual bool bounding_box(double t0, double t1, AABB& b) const;
+    virtual bool hit(const Ray& r, real t_min, real t_max, HitRecord& rec) const;
+    virtual bool bounding_box(real t0, real t1, AABB& b) const;
     
     // children
     Hitable* left;
@@ -76,7 +78,7 @@ public:
     AABB box;
 };
 
-BVHNode::BVHNode(Hitable** l, int n, double time0, double time1) {
+BVHNode::BVHNode(Hitable** l, int n, real time0, real time1) {
     int axis = int(3 * drand48());
     
     if (axis == 0) {
@@ -105,7 +107,7 @@ BVHNode::BVHNode(Hitable** l, int n, double time0, double time1) {
     box = surrounding_box(box_left, box_right);
 }
 
-bool BVHNode::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const {
+bool BVHNode::hit(const Ray& r, real t_min, real t_max, HitRecord& rec) const {
     if (box.hit(r, t_min, t_max)) {
         HitRecord left_rec, right_rec;
         bool hit_left = left->hit(r, t_min, t_max, left_rec);
@@ -130,7 +132,7 @@ bool BVHNode::hit(const Ray& r, double t_min, double t_max, HitRecord& rec) cons
     return false;
 }
 
-bool BVHNode::bounding_box(double t0, double t1, AABB& b) const {
+bool BVHNode::bounding_box(real t0, real t1, AABB& b) const {
     b = box;
     return true;
 }

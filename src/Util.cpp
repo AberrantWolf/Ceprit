@@ -8,6 +8,8 @@
 #include <Hitable/HitableList.h>
 #include <Hitable/FlipNormals.h>
 #include <Hitable/AABox.h>
+#include <Hitable/RotateY.h>
+#include <Hitable/Translation.h>
 
 Vec3 random_point_in_unit_disk() {
 	Vec3 p;
@@ -18,10 +20,10 @@ Vec3 random_point_in_unit_disk() {
 	return p;
 }
 
-bool refract(const Vec3& v, const Vec3& n, double ni_over_nt, Vec3& refracted) {
+bool refract(const Vec3& v, const Vec3& n, real ni_over_nt, Vec3& refracted) {
 	Vec3 uv = unit_vector(v);
-	double dt = dot(uv, n);
-	double discriminant = 1.0 - ni_over_nt * ni_over_nt * (1.0 - dt * dt);
+	real dt = dot(uv, n);
+	real discriminant = 1.0 - ni_over_nt * ni_over_nt * (1.0 - dt * dt);
 
 	if (discriminant > 0) {
 		refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminant);
@@ -32,8 +34,8 @@ bool refract(const Vec3& v, const Vec3& n, double ni_over_nt, Vec3& refracted) {
 }
 
 // Utility function for calculating reflectivity vs refractivity
-double schlick(double cosine, double ref_idx) {
-	double r0 = (1-ref_idx)/(1+ref_idx);
+real schlick(real cosine, real ref_idx) {
+	real r0 = (1-ref_idx)/(1+ref_idx);
 	r0 = r0*r0;
 
 	return r0 + (1-r0)*pow((1-cosine), 5);
@@ -65,8 +67,10 @@ Hitable* CornellBox() {
 	list[4] = new XZRect(0, 555, 0, 555, 0, white); // top
 	list[5] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
-	list[6] = new AABox(Vec3(130, 0, 65), Vec3(295, 165, 230), white);
-	list[7] = new AABox(Vec3(265, 0, 295), Vec3(430, 330, 460), white);
+//	list[6] = new AABox(Vec3(130, 0, 65), Vec3(295, 165, 230), white);
+//	list[7] = new AABox(Vec3(265, 0, 295), Vec3(430, 330, 460), white);
+	list[6] = new Translation(new RotateY(new AABox(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18), Vec3(130, 0, 65));
+	list[7] = new Translation(new RotateY(new AABox(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15), Vec3(265, 0, 295));
 
 	return new HitableList(list, 8);
 }

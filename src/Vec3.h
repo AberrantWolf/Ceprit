@@ -12,11 +12,12 @@
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
+#include "Defines.h"
 
 class Vec3 {
 public:
     Vec3() {}
-    Vec3(double e0, double e1, double e2) {
+    Vec3(real e0, real e1, real e2) {
         e[0] = e0;
         e[1] = e1;
         e[2] = e2;
@@ -25,12 +26,12 @@ public:
     //
     // Accessors
     //
-    inline double x() const { return e[0]; }
-    inline double y() const { return e[1]; }
-    inline double z() const { return e[2]; }
-    inline double r() const { return e[0]; }
-    inline double g() const { return e[0]; }
-    inline double b() const { return e[0]; }
+    inline real x() const { return e[0]; }
+    inline real y() const { return e[1]; }
+    inline real z() const { return e[2]; }
+    inline real r() const { return e[0]; }
+    inline real g() const { return e[0]; }
+    inline real b() const { return e[0]; }
     
     //
     // Operators
@@ -38,13 +39,13 @@ public:
     inline const Vec3& operator+() const { return *this; }
     inline Vec3 operator-() const { return Vec3(-e[0], -e[1], -e[2]); }
     
-    inline double operator[](int i) const { return e[i]; }
-    inline double& operator[](int i) { return e[i]; }
+    inline real operator[](int i) const { return e[i]; }
+    inline real& operator[](int i) { return e[i]; }
     
-    inline double length() const {
+    inline real length() const {
         return sqrt(squared_length());
     }
-    inline double squared_length() const {
+    inline real squared_length() const {
         return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
     }
     inline void make_unit_vector();
@@ -53,10 +54,10 @@ public:
     inline Vec3& operator-=(const Vec3 &v2);
     inline Vec3& operator*=(const Vec3 &v2);
     inline Vec3& operator/=(const Vec3 &v2);
-    inline Vec3& operator*=(const double t);
-    inline Vec3& operator/=(const double t);
+    inline Vec3& operator*=(const real t);
+    inline Vec3& operator/=(const real t);
     
-    double e[3];
+    real e[3];
 };
 
 //
@@ -91,19 +92,19 @@ inline Vec3 operator/(const Vec3& v1, const Vec3& v2) {
     return Vec3(v1[0]/v2[0], v1[1]/v2[1], v1[2]/v2[2]);
 }
 
-inline Vec3 operator*(const double t, const Vec3& v) {
+inline Vec3 operator*(const real t, const Vec3& v) {
     return Vec3(t*v[0], t*v[1], t*v[2]);
 }
 
-inline Vec3 operator*(const Vec3& v, const double t) {
+inline Vec3 operator*(const Vec3& v, const real t) {
     return Vec3(v[0]*t, v[1]*t, v[2]*t);
 }
 
-inline Vec3 operator/(const Vec3& v, const double t) {
+inline Vec3 operator/(const Vec3& v, const real t) {
     return Vec3(v[0]/t, v[1]/t, v[2]/t);
 }
 
-inline double dot(const Vec3& v1, const Vec3& v2) {
+inline real dot(const Vec3& v1, const Vec3& v2) {
     return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
 }
 
@@ -117,21 +118,17 @@ inline Vec3 unit_vector(const Vec3& v) {
     return v / v.length();
 }
 
-
-
-
-
 inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2*dot(v, n) * n;
 }
 
-bool refract(const Vec3& v, const Vec3& n, double ni_over_nt, Vec3& refracted);
+bool refract(const Vec3& v, const Vec3& n, real ni_over_nt, Vec3& refracted);
 
 //
 // Implementing inner functionality
 //
 inline void Vec3::make_unit_vector() {
-    double k = 1.0 / sqrt(squared_length());
+    real k = 1.0 / sqrt(squared_length());
     e[0] *= k;
     e[1] *= k;
     e[2] *= k;
@@ -165,14 +162,14 @@ inline Vec3& Vec3::operator/=(const Vec3& v) {
     return *this;
 }
 
-inline Vec3& Vec3::operator*=(const double v) {
+inline Vec3& Vec3::operator*=(const real v) {
     e[0] *= v;
     e[1] *= v;
     e[2] *= v;
     return *this;
 }
 
-inline Vec3& Vec3::operator/=(const double v) {
+inline Vec3& Vec3::operator/=(const real v) {
     e[0] /= v;
     e[1] /= v;
     e[2] /= v;

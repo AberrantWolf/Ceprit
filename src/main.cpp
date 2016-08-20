@@ -45,7 +45,7 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
 		return Vec3(0, 0, 0);
         // Sky background
 //        Vec3 unit_direction = unit_vector(r.direction());
-//        double t = 0.5 * (unit_direction.y() + 1.0);
+//        real t = 0.5 * (unit_direction.y() + 1.0);
 //        return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
     }
 }
@@ -63,7 +63,7 @@ HitableList* random_scene() {
     int i = 1;
     for (int a = -11; a<11; a++) {
         for (int b=-11; b<11; b++) {
-            double choose_mat = drand48();
+            real choose_mat = drand48();
             Vec3 center(a + 0.9*drand48(), 0.2, b + 0.9*drand48());
             if ((center-Vec3(4, 0.2, 0)).length() > 0.9) {
                 if (choose_mat < 0.7) {
@@ -122,7 +122,7 @@ int main(int argc, const char * argv[]) {
 //	}
 //	
 //	Vec3 center = Vec3(0, 1.5, 0);
-//	double radius = 1.5;
+//	real radius = 1.5;
 //	Texture* tex = new ImageTexture(tex_data, tx, ty);
 //	list[0] = new Sphere(center, center, 0, 1, radius, new Lambertian(tex));
 //	
@@ -142,11 +142,11 @@ int main(int argc, const char * argv[]) {
     Vec3 lookat(278, 278, 0);
     Vec3 vup(0, 1, 0);
     
-    double focal_dist = 10.0; (lookfrom - lookat).length();
-    double aperture = 0.0;
-	double fovy = 40.0;
+    real focal_dist = 10.0; (lookfrom - lookat).length();
+    real aperture = 0.0;
+	real fovy = 40.0;
     
-    Camera cam(lookfrom, lookat, vup, fovy, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
+    Camera cam(lookfrom, lookat, vup, fovy, real(nx)/real(ny), aperture, focal_dist, 0.0, 1.0);
     
     std::random_device rd;
     std::mt19937_64 gen(rd());
@@ -158,20 +158,20 @@ int main(int argc, const char * argv[]) {
             Vec3 col(0, 0, 0);
             
             for (int s=0; s<ns; s++) {
-                double u = double(i + dis(gen)) / double(nx);
-                double v = double(j + dis(gen)) / double(ny);
+                real u = real(i + dis(gen)) / real(nx);
+                real v = real(j + dis(gen)) / real(ny);
                 
                 Ray r = cam.get_ray(u, v);
 				
 				Vec3 tcol = color(r, world, 0);
-//				double cmax = fmax(tcol.x(), fmax(tcol.y(), tcol.z()));
+//				real cmax = fmax(tcol.x(), fmax(tcol.y(), tcol.z()));
 //				if (cmax > 1) {
 //					tcol /= cmax;
 //				}
 				
 				col += tcol;
             }
-            col /= double(ns);
+            col /= real(ns);
             col = Vec3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
             
             int ir = int(255.99f * col[0]);

@@ -5,15 +5,15 @@
 #include "AARects.h"
 
 
-bool XYRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
-	double t = (k-r.origin().z()) / r.direction().z();
+bool XYRect::hit(const Ray &r, real t_min, real t_max, HitRecord &rec) const {
+	real t = (k-r.origin().z()) / r.direction().z();
 
 	if (t<t_min || t > t_max) {
 		return false;
 	}
 
-	double x = r.origin().x() + t*r.direction().x();
-	double y = r.origin().y() + t*r.direction().y();
+	real x = r.origin().x() + t*r.direction().x();
+	real y = r.origin().y() + t*r.direction().y();
 	if (x < x0 || x > x1 || y < y0 || y > y1) {
 		return false;
 	}
@@ -29,15 +29,15 @@ bool XYRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const
 	return true;
 }
 
-bool XZRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
-	double t = (k-r.origin().y()) / r.direction().y();
+bool XZRect::hit(const Ray &r, real t_min, real t_max, HitRecord &rec) const {
+	real t = (k-r.origin().y()) / r.direction().y();
 
 	if (t<t_min || t > t_max) {
 		return false;
 	}
 
-	double x = r.origin().x() + t*r.direction().x();
-	double z = r.origin().z() + t*r.direction().z();
+	real x = r.origin().x() + t*r.direction().x();
+	real z = r.origin().z() + t*r.direction().z();
 	if (x < x0 || x > x1 || z < z0 || z > z1) {
 		return false;
 	}
@@ -53,15 +53,15 @@ bool XZRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const
 	return true;
 }
 
-bool YZRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
-	double t = (k-r.origin().x()) / r.direction().x();
+bool YZRect::hit(const Ray &r, real t_min, real t_max, HitRecord &rec) const {
+	real t = (k-r.origin().x()) / r.direction().x();
 
 	if (t<t_min || t > t_max) {
 		return false;
 	}
 
-	double y = r.origin().y() + t*r.direction().y();
-	double z = r.origin().z() + t*r.direction().z();
+	real y = r.origin().y() + t*r.direction().y();
+	real z = r.origin().z() + t*r.direction().z();
 	if (y < y0 || y > y1 || z < z0 || z > z1) {
 		return false;
 	}

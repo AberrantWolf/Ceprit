@@ -16,17 +16,17 @@
 class Material;
 
 struct HitRecord {
-    double t;   //distance along ray
+    real t;   //distance along ray
     Vec3 point;
     Vec3 normal;
     Material* mat_ptr;
-	double u, v;
+	real u, v;
 };
 
 class Hitable {
 public:
-    virtual bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const = 0;
-    virtual bool bounding_box(double t0, double t1, AABB& box) const = 0;
+    virtual bool hit(const Ray& r, real t_min, real t_max, HitRecord& rec) const = 0;
+    virtual bool bounding_box(real t0, real t1, AABB& box) const = 0;
 };
 
 #endif /* Hitable_h */
