@@ -6,6 +6,7 @@
 #include <Material/Material.h>
 #include <Hitable/AARects.h>
 #include <Hitable/HitableList.h>
+#include <Hitable/FlipNormals.h>
 
 Vec3 random_point_in_unit_disk() {
 	Vec3 p;
@@ -56,11 +57,12 @@ Hitable* CornellBox() {
 	Material* green = new Lambertian( new ConstantTexture( Vec3(0.12, 0.45, 0.15)) );
 	Material* light = new DiffuseLight( new ConstantTexture( Vec3(15, 15, 15)) );
 
-	list[0] = new YZRect(0, 555, 0, 555, 555, green); // left
+	list[0] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green)); // left
 	list[1] = new YZRect(0, 555, 0, 555, 0, red); // right
 	list[2] = new XZRect(213, 343, 227, 332, 554, light); // light panel near top
-	list[3] = new XZRect(0, 555, 0, 555, 0, white); // bottom
+	list[3] = new FlipNormals(new XZRect(0, 555, 0, 555, 0, white)); // bottom
 	list[4] = new XZRect(0, 555, 0, 555, 555, white); // top
+	list[5] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
 	return new HitableList(list, 5);
 }

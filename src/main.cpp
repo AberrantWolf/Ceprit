@@ -16,6 +16,16 @@
 #include "Camera.h"
 //#include "BVHNode.h"
 
+#ifdef DEBUG
+#define WIDTH 100
+#define HEIGHT 100
+#define NSAMPLES 30
+#else
+#define WIDTH 400
+#define HEIGHT 400
+#define NSAMPLES 100
+#endif
+
 Vec3 color(const Ray& r, Hitable* world, int depth) {
     HitRecord rec;
     
@@ -98,9 +108,9 @@ HitableList* SimpleLight() {
 }
 
 int main(int argc, const char * argv[]) {
-    int nx = 400;
-    int ny = 400;
-    int ns = 100;   // number of samples
+    int nx = WIDTH;
+    int ny = HEIGHT;
+    int ns = NSAMPLES;   // number of samples
     
 	//HitableList* world = random_scene();
 //	Hitable* list[2];
@@ -128,14 +138,15 @@ int main(int argc, const char * argv[]) {
 	
     //BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
-    Vec3 lookfrom(4, 2, 12);
-    Vec3 lookat(0, 1, 0);
+    Vec3 lookfrom(278, 278, -800);
+    Vec3 lookat(278, 278, 0);
     Vec3 vup(0, 1, 0);
     
-    double focal_dist = (lookfrom - lookat).length();
-    double aperture = 0.3;
+    double focal_dist = 10.0; (lookfrom - lookat).length();
+    double aperture = 0.0;
+	double fovy = 40.0;
     
-    Camera cam(lookfrom, lookat, vup, 45, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
+    Camera cam(lookfrom, lookat, vup, fovy, double(nx)/double(ny), aperture, focal_dist, 0.0, 1.0);
     
     std::random_device rd;
     std::mt19937_64 gen(rd());
