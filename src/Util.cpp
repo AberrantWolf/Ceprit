@@ -7,6 +7,7 @@
 #include <Hitable/AARects.h>
 #include <Hitable/HitableList.h>
 #include <Hitable/FlipNormals.h>
+#include <Hitable/AABox.h>
 
 Vec3 random_point_in_unit_disk() {
 	Vec3 p;
@@ -50,7 +51,7 @@ AABB surrounding_box(AABB box0, AABB box1) {
 }
 
 Hitable* CornellBox() {
-	Hitable** list = new Hitable*[6];
+	Hitable** list = new Hitable*[8];
 
 	Material* red = new Lambertian( new ConstantTexture( Vec3(0.65, 0.05, 0.05)) );
 	Material* white = new Lambertian( new ConstantTexture( Vec3(0.73, 0.73, 0.73)) );
@@ -60,9 +61,12 @@ Hitable* CornellBox() {
 	list[0] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green)); // left
 	list[1] = new YZRect(0, 555, 0, 555, 0, red); // right
 	list[2] = new XZRect(213, 343, 227, 332, 554, light); // light panel near top
-	list[3] = new FlipNormals(new XZRect(0, 555, 0, 555, 0, white)); // bottom
-	list[4] = new XZRect(0, 555, 0, 555, 555, white); // top
+	list[3] = new FlipNormals(new XZRect(0, 555, 0, 555, 555, white)); // bottom
+	list[4] = new XZRect(0, 555, 0, 555, 0, white); // top
 	list[5] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
-	return new HitableList(list, 5);
+	list[6] = new AABox(Vec3(130, 0, 65), Vec3(295, 165, 230), white);
+	list[7] = new AABox(Vec3(265, 0, 295), Vec3(430, 330, 460), white);
+
+	return new HitableList(list, 8);
 }

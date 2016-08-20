@@ -8,7 +8,7 @@
 bool XYRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
 	double t = (k-r.origin().z()) / r.direction().z();
 
-	if (t<0 || t > t_max) {
+	if (t<t_min || t > t_max) {
 		return false;
 	}
 
@@ -32,7 +32,7 @@ bool XYRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const
 bool XZRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
 	double t = (k-r.origin().y()) / r.direction().y();
 
-	if (t<0 || t > t_max) {
+	if (t<t_min || t > t_max) {
 		return false;
 	}
 
@@ -56,7 +56,7 @@ bool XZRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const
 bool YZRect::hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const {
 	double t = (k-r.origin().x()) / r.direction().x();
 
-	if (t<0 || t > t_max) {
+	if (t<t_min || t > t_max) {
 		return false;
 	}
 

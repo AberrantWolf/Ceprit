@@ -31,6 +31,6 @@ set(SOURCE_FILES
 		src/Material/Material.h
 		src/Material/Perlin.cpp src/Material/Perlin.h
 		src/Material/Texture.h
-		src/Hitable/FlipNormals.h)
+		src/Hitable/FlipNormals.h src/Hitable/AABox.cpp src/Hitable/AABox.h)
 
 add_executable(Ceprit ${SOURCE_FILES})
