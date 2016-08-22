@@ -7,7 +7,9 @@
 
 #include <cfloat>
 
-#define real double
-#define REAL_MAX DBL_MAX
+//#define real double
+//#define REAL_MAX DBL_MAX
+#define real float
+#define REAL_MAX FLT_MAX
 
 #endif //CEPRIT_DEFINES_H

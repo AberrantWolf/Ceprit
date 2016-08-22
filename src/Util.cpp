@@ -10,6 +10,7 @@
 #include <Hitable/AABox.h>
 #include <Hitable/RotateY.h>
 #include <Hitable/Translation.h>
+#include <Hitable/ConstantMedium.h>
 
 Vec3 random_point_in_unit_disk() {
 	Vec3 p;
@@ -67,10 +68,10 @@ Hitable* CornellBox() {
 	list[4] = new XZRect(0, 555, 0, 555, 0, white); // top
 	list[5] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
-//	list[6] = new AABox(Vec3(130, 0, 65), Vec3(295, 165, 230), white);
-//	list[7] = new AABox(Vec3(265, 0, 295), Vec3(430, 330, 460), white);
-	list[6] = new Translation(new RotateY(new AABox(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18), Vec3(130, 0, 65));
-	list[7] = new Translation(new RotateY(new AABox(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15), Vec3(265, 0, 295));
+	Hitable* box1 = new Translation(new RotateY(new AABox(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18), Vec3(130, 0, 65));
+	Hitable* box2 = new Translation(new RotateY(new AABox(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15), Vec3(265, 0, 295));
+	list[6] = new ConstantMedium(box1, 0.01, new ConstantTexture(Vec3(1.0, 1.0, 1.0)));
+	list[7] = new ConstantMedium(box2, 0.01, new ConstantTexture(Vec3(0.0, 0.0, 0.0)));
 
 	return new HitableList(list, 8);
 }

@@ -3,7 +3,6 @@
 //
 
 
-
 #include <Ray.h>
 #include <Util.h>
 #include "Hitable.h"

@@ -23,7 +23,8 @@
 #else
 #define WIDTH 400
 #define HEIGHT 400
-#define NSAMPLES 100
+#define NSAMPLES 500
+#define MAX_BOUNCES 10
 #endif
 
 Vec3 color(const Ray& r, Hitable* world, int depth) {
@@ -34,7 +35,7 @@ Vec3 color(const Ray& r, Hitable* world, int depth) {
         Vec3 attenuation;
 		Vec3 emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.point);
         
-        if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
+        if (depth < MAX_BOUNCES && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
 			return emitted + attenuation * color(scattered, world, depth+1);
 		} else {
 			return emitted;

@@ -12,7 +12,7 @@ class RotateY : public Hitable {
 public:
 	RotateY(Hitable* p, real angle);
 
-	virtual bool hit(const Ray &r, double t_min, double t_max, HitRecord &rec) const override;
+	virtual bool hit(const Ray &r, real t_min, real t_max, HitRecord &rec) const override;
 	virtual bool bounding_box(real t0, real t1, AABB &box) const override;
 
 	Hitable* ptr;

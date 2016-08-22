@@ -9,6 +9,7 @@
 #ifndef Material_h
 #define Material_h
 
+#include <Util.h>
 #include "Vec3.h"
 #include "Texture.h"
 

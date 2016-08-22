@@ -29,6 +29,6 @@ set(SOURCE_FILES
 		src/Material/Material.h
 		src/Material/Perlin.cpp src/Material/Perlin.h
 		src/Material/Texture.h
-		src/Hitable/FlipNormals.h src/Hitable/AABox.cpp src/Hitable/AABox.h src/Hitable/Translation.h src/Hitable/RotateY.cpp src/Hitable/RotateY.h src/Defines.h)
+		src/Hitable/FlipNormals.h src/Hitable/AABox.cpp src/Hitable/AABox.h src/Hitable/Translation.h src/Hitable/RotateY.cpp src/Hitable/RotateY.h src/Defines.h src/Hitable/ConstantMedium.cpp src/Hitable/ConstantMedium.h src/Material/Isotropic.cpp src/Material/Isotropic.h)
 
 add_executable(Ceprit ${SOURCE_FILES})
