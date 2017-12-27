@@ -11,6 +11,8 @@
 #ifndef Sphere_h
 #define Sphere_h
 
+#include <cmath>
+
 #include "Defines.h"
 #include <Util.h>
 #include "Ray.h"

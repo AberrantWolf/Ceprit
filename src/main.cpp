@@ -30,7 +30,7 @@
 Vec3 color(const Ray& r, Hitable* world, int depth) {
     HitRecord rec;
     
-    if (world->hit(r, 0.001, MAXFLOAT, rec)) {
+    if (world->hit(r, 0.001, REAL_MAX, rec)) {
         Ray scattered;
         Vec3 attenuation;
 		Vec3 emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.point);
@@ -64,17 +64,17 @@ HitableList* random_scene() {
     int i = 1;
     for (int a = -11; a<11; a++) {
         for (int b=-11; b<11; b++) {
-            real choose_mat = drand48();
-            Vec3 center(a + 0.9*drand48(), 0.2, b + 0.9*drand48());
+            real choose_mat = RAND();
+            Vec3 center(a + 0.9*RAND(), 0.2, b + 0.9*RAND());
             if ((center-Vec3(4, 0.2, 0)).length() > 0.9) {
                 if (choose_mat < 0.7) {
                     //diffuse
-                    ConstantTexture* col_tex = new ConstantTexture(Vec3(drand48(), drand48(), drand48()));
+                    ConstantTexture* col_tex = new ConstantTexture(Vec3(RAND(), RAND(), RAND()));
                     Material *mat = new Lambertian(col_tex);
-                    list[i++] = new Sphere(center, center + Vec3(0, 0.5*drand48(), 0),  0, 1, 0.2, mat);
+                    list[i++] = new Sphere(center, center + Vec3(0, 0.5*RAND(), 0),  0, 1, 0.2, mat);
                 } else if (choose_mat < 0.9) {
                     // metal
-                    Material *mat = new Metal(Vec3(0.5*(1+drand48()), 0.5*(1+drand48()), 0.5*(1+drand48())), 0.5*drand48());
+                    Material *mat = new Metal(Vec3(0.5*(1+RAND()), 0.5*(1+RAND()), 0.5*(1+RAND())), 0.5*RAND());
                     list[i++] = new Sphere(center, center,  0, 1, 0.2, mat);
                 } else {
                     // Glass

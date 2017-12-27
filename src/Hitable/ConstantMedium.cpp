@@ -5,7 +5,7 @@
 #include "ConstantMedium.h"
 
 bool ConstantMedium::hit(const Ray &r, real t_min, real t_max, HitRecord &rec) const {
-	bool db = (drand48() < 0.0001);
+	bool db = (RAND() < 0.0001);
 	db = false;
 	HitRecord rec1, rec2;
 
@@ -30,7 +30,7 @@ bool ConstantMedium::hit(const Ray &r, real t_min, real t_max, HitRecord &rec) c
 
 			real dir_length = r.direction().length();
 			real dist_inside_boundary = (rec2.t - rec1.t) * dir_length;
-			real hit_dist = (real) (-(1/density) * log(drand48()));
+			real hit_dist = (real) (-(1/density) * log(RAND()));
 			if (hit_dist < dist_inside_boundary) {
 				rec.t = rec1.t + hit_dist / dir_length;
 				rec.point = r.point_at_parameter(rec.t);

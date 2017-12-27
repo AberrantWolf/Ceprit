@@ -115,7 +115,7 @@ public:
         }
         
         // set scattered ray to reflected or refracted
-        if (drand48() < reflect_prob) {
+        if (RAND() < reflect_prob) {
             scattered = Ray(rec.point, reflected, in_r.time());
         } else {
             scattered = Ray(rec.point, refracted, in_r.time());

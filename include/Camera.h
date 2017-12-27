@@ -41,7 +41,7 @@ public:
         Vec3 rd = lens_radius * random_point_in_unit_disk();
         Vec3 offset =u * rd.x() + v*rd.y();
         
-        real time = time0 + drand48() * (time1 - time0);
+        real time = time0 + RAND() * (time1 - time0);
         return Ray(origin + offset, lower_left_corner + s*horizontal + t*vertical - origin - offset, time);
     }
     

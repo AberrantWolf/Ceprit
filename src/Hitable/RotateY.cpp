@@ -2,6 +2,10 @@
 // Created by B. Scott Harper on 8/20/16.
 //
 
+#include <Defines.h>
+
+#include <cmath>
+
 #include "RotateY.h"
 
 RotateY::RotateY(Hitable *p, real angle) : ptr(p) {

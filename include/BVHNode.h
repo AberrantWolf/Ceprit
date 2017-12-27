@@ -79,7 +79,7 @@ public:
 };
 
 BVHNode::BVHNode(Hitable** l, int n, real time0, real time1) {
-    int axis = int(3 * drand48());
+    int axis = int(3 * RAND());
     
     if (axis == 0) {
         std::qsort(l, n, sizeof(Hitable*), box_x_compare);
