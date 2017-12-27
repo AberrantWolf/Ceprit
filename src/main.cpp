@@ -14,6 +14,7 @@
 #include "Sphere.h"
 #include "Hitable/HitableList.h"
 #include "Camera.h"
+#include <memory>
 //#include "BVHNode.h"
 
 #ifdef DEBUG
@@ -135,7 +136,7 @@ int main(int argc, const char * argv[]) {
 //	HitableList* world = new HitableList(list, 2);
 	//HitableList* world = SimpleLight();
 
-	Hitable* world = CornellBox();
+	std::unique_ptr<Hitable> world = CornellBox();
 	
     //BVHNode* tree = new BVHNode(world->list, world->list_size, 0, 1);
     
@@ -164,7 +165,7 @@ int main(int argc, const char * argv[]) {
                 
                 Ray r = cam.get_ray(u, v);
 				
-				Vec3 tcol = color(r, world, 0);
+				Vec3 tcol = color(r, world.get(), 0);
 //				real cmax = fmax(tcol.x(), fmax(tcol.y(), tcol.z()));
 //				if (cmax > 1) {
 //					tcol /= cmax;

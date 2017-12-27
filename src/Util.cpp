@@ -11,6 +11,7 @@
 #include <Hitable/RotateY.h>
 #include <Hitable/Translation.h>
 #include <Hitable/ConstantMedium.h>
+#include <memory>
 
 Vec3 random_point_in_unit_disk() {
 	Vec3 p;
@@ -53,7 +54,7 @@ AABB surrounding_box(AABB box0, AABB box1) {
 	return AABB(small, big);
 }
 
-Hitable* CornellBox() {
+std::unique_ptr<Hitable> CornellBox() {
 	Hitable** list = new Hitable*[8];
 
 	Material* red = new Lambertian( new ConstantTexture( Vec3(0.65, 0.05, 0.05)) );
@@ -73,5 +74,5 @@ Hitable* CornellBox() {
 	list[6] = new ConstantMedium(box1, 0.01, new ConstantTexture(Vec3(1.0, 1.0, 1.0)));
 	list[7] = new ConstantMedium(box2, 0.01, new ConstantTexture(Vec3(0.0, 0.0, 0.0)));
 
-	return new HitableList(list, 8);
+	return std::make_unique<HitableList>(list, 8);
 }
